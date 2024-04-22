@@ -1,16 +1,22 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { ButtonLoading } from "../ui/button-loading"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 import { ButtonSubmit } from "../ui/button-submit"
 import { useState } from "react"
 import {
@@ -38,6 +44,18 @@ const formSchema = z.object({
       }).max(50, {
           message: "Descrição deve ter no máximo 50 caractéres.",
       }),
+    expectedDelivery: z.string().max(50, {
+          message: "Descrição deve ter no máximo 50 caractéres.",
+      }),
+    priority: z.string().max(50, {
+            message: "Descrição deve ter no máximo 50 caractéres.",
+        }),
+    value: z.string().max(50, {
+            message: "Valor deve ter no máximo 50 caractéres.",
+        }),
+    payDate: z.string().max(50, {
+            message: "Valor deve ter no máximo 50 caractéres.",
+        }),
   })
 
 export default function CardNewTask(){
@@ -47,6 +65,10 @@ export default function CardNewTask(){
         defaultValues: {
             name: "",
             description: "",
+            expectedDelivery: "",
+            priority: "",
+            value: "",
+            payDate: "",
         },
     })
 
@@ -56,54 +78,125 @@ export default function CardNewTask(){
 
     const [isLoading, setIsLoading] = useState(false)
     return (
-        <Card className="w-full shadow-lg">
-            <CardHeader>
-                <CardTitle>Nova tarefa</CardTitle>
-                <CardDescription>Adicione uma nova tarefa.</CardDescription>
-            </CardHeader>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <CardContent>
-                        
-                            <div className="grid w-full items-center gap-4">
-                                <div className="flex flex-col space-y-1.5">
-                                    <FormField
-                                        control={form.control}
-                                        name="name"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                            <FormLabel>Nome</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Nome da tarefa" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                    <FormField
-                                        control={form.control}
-                                        name="description"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                            <FormLabel>Descrição</FormLabel>
-                                            <FormControl>
-                                                <Textarea placeholder="Descrição da tarefa" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
+        <Dialog>
+            <DialogTrigger asChild>
+                <Button>Adicionar nova task</Button>
+            </DialogTrigger>
+            
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>Adicionar nova task</DialogTitle>
+                    <DialogDescription>
+                        Cadastre as informações da tarefa.
+                    </DialogDescription>
+                </DialogHeader>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                            
+                                <div className="grid w-full items-center gap-4">
+                                    <div className="flex flex-col gap-5">
+                                        <FormField
+                                            control={form.control}
+                                            name="name"
+                                            render={({ field }) => (
+                                                <FormItem className="w-full">
+                                                    <FormLabel>Nome*</FormLabel>
+                                                    <FormControl>
+                                                        <Input className="w-full" placeholder="Nome da tarefa" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <div className="flex flex-row gap-5">
+                                            
+                                            <FormField
+                                                control={form.control}
+                                                name="expectedDelivery"
+                                                render={({ field }) => (
+                                                    <FormItem className="w-full">
+                                                        <FormLabel>Previsão de entrega</FormLabel>
+                                                        <FormControl>
+                                                            <Input className="w-full" type="date" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="priority"
+                                                render={({ field }) => (
+                                                    <FormItem className="w-full">
+                                                        <FormLabel>Prioridade</FormLabel>
+                                                        <FormControl>
+                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                                <SelectTrigger className="w-full">
+                                                                    <SelectValue placeholder="Prioridade" />
+                                                                </SelectTrigger>
+                                                                <SelectContent>
+                                                                    <SelectItem value="light">Light</SelectItem>
+                                                                    <SelectItem value="dark">Dark</SelectItem>
+                                                                    <SelectItem value="system">System</SelectItem>
+                                                                </SelectContent>
+                                                            </Select>
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                        <FormField
+                                            control={form.control}
+                                            name="description"
+                                            render={({ field }) => (
+                                                <FormItem className="w-full">
+                                                    <FormLabel>Descrição</FormLabel>
+                                                    <FormControl>
+                                                        <Textarea placeholder="Descrição da tarefa" {...field} />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                        <div className="flex flex-row gap-5">
+                                            <FormField
+                                                control={form.control}
+                                                name="value"
+                                                render={({ field }) => (
+                                                    <FormItem className="w-full">
+                                                        <FormLabel>Valor</FormLabel>
+                                                        <FormControl>
+                                                            <Input placeholder="R$ 1000" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                            <FormField
+                                                control={form.control}
+                                                name="payDate"
+                                                render={({ field }) => (
+                                                    <FormItem className="w-full">
+                                                        <FormLabel>Data de pagamento</FormLabel>
+                                                        <FormControl>
+                                                            <Input type="date" {...field} />
+                                                        </FormControl>
+                                                        <FormMessage />
+                                                    </FormItem>
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+
                                 </div>
 
-                            </div>
-
-                    </CardContent>
-                    <CardFooter className="flex justify-between">
-                        <Button variant="destructive" type="button">Cancel</Button>
-                        <ButtonSubmit text="Adicionar" isLoading={isLoading} />
-                    </CardFooter>
-                </form>
-            </Form>
-        </Card>
+                        <DialogFooter className="flex justify-between">
+                            <ButtonSubmit text="Adicionar" isLoading={isLoading} />
+                        </DialogFooter>
+                    </form>
+                </Form>
+            </DialogContent>
+        </Dialog>
     )
 }
