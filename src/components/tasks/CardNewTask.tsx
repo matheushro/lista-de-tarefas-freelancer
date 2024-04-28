@@ -32,7 +32,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Textarea } from "../ui/textarea"
- 
+import { useToast } from "@/components/ui/use-toast"
+
+
 const formSchema = z.object({
     name: z.string().min(2, {
         message: "Nome deve ter pelo menos 2 caractéres.",
@@ -59,7 +61,9 @@ const formSchema = z.object({
   })
 
 export default function CardNewTask(){
-
+    const { toast } = useToast()
+    const [isLoading, setIsLoading] = useState(false)
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -72,11 +76,34 @@ export default function CardNewTask(){
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-      }
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setIsLoading(true)
 
-    const [isLoading, setIsLoading] = useState(false)
+        try {
+            
+           const response = await fetch('/api/task', {
+                method: 'POST', 
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify(values), 
+            });
+            toast({
+                title: "Task adicionada com sucesso",
+            })
+            
+            form.reset();
+        } catch (error: any) {
+            toast({
+                title: "Erro ao criar task",
+                description: error.message,
+              })
+        }
+        setIsLoading(false)
+
+    }
+
+    
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -102,7 +129,7 @@ export default function CardNewTask(){
                                                 <FormItem className="w-full">
                                                     <FormLabel>Nome*</FormLabel>
                                                     <FormControl>
-                                                        <Input className="w-full" placeholder="Nome da tarefa" {...field} />
+                                                        <Input disabled={isLoading} className="w-full" placeholder="Nome da tarefa" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -117,7 +144,7 @@ export default function CardNewTask(){
                                                     <FormItem className="w-full">
                                                         <FormLabel>Previsão de entrega</FormLabel>
                                                         <FormControl>
-                                                            <Input className="w-full" type="date" {...field} />
+                                                            <Input disabled={isLoading} className="w-full" type="date" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -130,7 +157,7 @@ export default function CardNewTask(){
                                                     <FormItem className="w-full">
                                                         <FormLabel>Prioridade</FormLabel>
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <Select disabled={isLoading} onValueChange={field.onChange} defaultValue={field.value}>
                                                                 <SelectTrigger className="w-full">
                                                                     <SelectValue placeholder="Prioridade" />
                                                                 </SelectTrigger>
@@ -153,7 +180,7 @@ export default function CardNewTask(){
                                                 <FormItem className="w-full">
                                                     <FormLabel>Descrição</FormLabel>
                                                     <FormControl>
-                                                        <Textarea placeholder="Descrição da tarefa" {...field} />
+                                                        <Textarea disabled={isLoading} placeholder="Descrição da tarefa" {...field} />
                                                     </FormControl>
                                                     <FormMessage />
                                                 </FormItem>
@@ -167,7 +194,7 @@ export default function CardNewTask(){
                                                     <FormItem className="w-full">
                                                         <FormLabel>Valor</FormLabel>
                                                         <FormControl>
-                                                            <Input placeholder="R$ 1000" {...field} />
+                                                            <Input disabled={isLoading} placeholder="R$ 1000" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
@@ -180,7 +207,7 @@ export default function CardNewTask(){
                                                     <FormItem className="w-full">
                                                         <FormLabel>Data de pagamento</FormLabel>
                                                         <FormControl>
-                                                            <Input type="date" {...field} />
+                                                            <Input disabled={isLoading} type="date" {...field} />
                                                         </FormControl>
                                                         <FormMessage />
                                                     </FormItem>
