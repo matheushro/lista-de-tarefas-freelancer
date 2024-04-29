@@ -1,5 +1,6 @@
 "use client"
 
+import { formatCurrencyToBR, formatDateToBR } from "@/lib/utils"
 import { ColumnDef } from "@tanstack/react-table"
 
 
@@ -24,13 +25,28 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: "expectedDelivery",
     header: "Data de entrega",
+    cell: ({ row }) => (
+      <div>
+        {formatDateToBR(row.getValue("payDate"))}
+      </div>
+    ),
   },
   {
-    accessorKey: "price",
+    accessorKey: "value",
     header: "Valor",
+    cell: ({ row }) => (
+      <div>
+        {formatCurrencyToBR(row.getValue("value"))}
+      </div>
+    ),
   },
   {
     accessorKey: "payDate",
     header: "Data de pagamento",
+    cell: ({ row }) => (
+      <div>
+        {formatDateToBR(row.getValue("payDate"))}
+      </div>
+    ),
   },
 ]

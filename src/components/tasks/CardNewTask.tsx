@@ -162,9 +162,10 @@ export default function CardNewTask(){
                                                                     <SelectValue placeholder="Prioridade" />
                                                                 </SelectTrigger>
                                                                 <SelectContent>
-                                                                    <SelectItem value="light">Light</SelectItem>
-                                                                    <SelectItem value="dark">Dark</SelectItem>
-                                                                    <SelectItem value="system">System</SelectItem>
+                                                                    <SelectItem value="light">Urgente</SelectItem>
+                                                                    <SelectItem value="light">Alta</SelectItem>
+                                                                    <SelectItem value="dark">Média</SelectItem>
+                                                                    <SelectItem value="system">Baixa</SelectItem>
                                                                 </SelectContent>
                                                             </Select>
                                                         </FormControl>

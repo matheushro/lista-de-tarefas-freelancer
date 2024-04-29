@@ -19,3 +19,13 @@ export async function POST(request: NextRequest) {
     )
 
 }
+
+export async function GET(){
+    await connectMongoDB();
+
+
+    const tasks = await Task.find();
+
+    return NextResponse.json({tasks})
+}
+
