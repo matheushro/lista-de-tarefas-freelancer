@@ -26,7 +26,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
 
     const { id } = params;
     await connectMongoDB();
-    await Task.findByAndAndDelete(id);
+    await Task.findByIdAndDelete(id);
     return NextResponse.json(
         {
             message: 'Task deletada com sucesso'

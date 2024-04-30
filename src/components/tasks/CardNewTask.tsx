@@ -33,6 +33,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { Textarea } from "../ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
+import { CreateNewTask } from "@/actions/CreateNewTask"
 
 
 const formSchema = z.object({
@@ -81,23 +82,17 @@ export default function CardNewTask(){
 
         try {
             
-           const response = await fetch('/api/task', {
-                method: 'POST', 
-                headers: {
-                    'Content-Type': 'application/json', 
-                },
-                body: JSON.stringify(values), 
-            });
+            await CreateNewTask(values);
             toast({
                 title: "Task adicionada com sucesso",
             })
-            
             form.reset();
+
         } catch (error: any) {
             toast({
                 title: "Erro ao criar task",
                 description: error.message,
-              })
+            })
         }
         setIsLoading(false)
 
@@ -162,10 +157,10 @@ export default function CardNewTask(){
                                                                     <SelectValue placeholder="Prioridade" />
                                                                 </SelectTrigger>
                                                                 <SelectContent>
-                                                                    <SelectItem value="light">Urgente</SelectItem>
-                                                                    <SelectItem value="light">Alta</SelectItem>
-                                                                    <SelectItem value="dark">Média</SelectItem>
-                                                                    <SelectItem value="system">Baixa</SelectItem>
+                                                                    <SelectItem value="Urgente">Urgente</SelectItem>
+                                                                    <SelectItem value="Alta">Alta</SelectItem>
+                                                                    <SelectItem value="Média">Média</SelectItem>
+                                                                    <SelectItem value="Baixa">Baixa</SelectItem>
                                                                 </SelectContent>
                                                             </Select>
                                                         </FormControl>
