@@ -7,7 +7,6 @@ import { ColumnDef } from "@tanstack/react-table"
 import { CreditCard, EllipsisVertical, Keyboard, PenIcon, Settings, Trash, User } from "lucide-react"
 import { deleteTask } from "./page"
 
-
 export type Payment = {
   id: string
   price: number
@@ -59,7 +58,10 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: "_id",
     header: "Opções",
-    cell: ({ row }) => (
+    cell: ({ row }) => {
+      const data = row.original
+
+      return (
       <div className="flex flex-row gap-1">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -68,7 +70,7 @@ export const columns: ColumnDef<Payment>[] = [
           <DropdownMenuContent className="w-56">
             <DropdownMenuLabel>Opções da task</DropdownMenuLabel>
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => deleteTask(row.getValue("_id"))}>
+              <DropdownMenuItem onClick={() => row.columnFilters}>
                 <Trash className="mr-2 h-4 w-4" />
                 <span>Deletar</span>
                 <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
@@ -83,7 +85,8 @@ export const columns: ColumnDef<Payment>[] = [
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    ),
+      )
+    },
   },
 ]
 
