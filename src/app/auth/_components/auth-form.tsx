@@ -37,7 +37,7 @@ export function AuthForm(){
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold">Sign in with a magic link</h1>
           <p className="text-gray-500 dark:text-gray-400">
-            Enter your email address and we'll send you a magic link to sign in.
+            Enter your email address and we&apos;ll send you a magic link to sign in.
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
