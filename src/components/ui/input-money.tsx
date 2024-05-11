@@ -1,14 +1,14 @@
 import { Input } from '@/components/ui/input';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputMask from 'react-input-mask';
 
 interface MoneyProps {
-  defaultValue: string;
+  defaultValue?: string;
   onChange: (value: string) => void;
   [key: string]: any;
 }
 
-const InputMoney: React.FC<MoneyProps> = ({ defaultValue, onChange, ...props }) => {
+const Money: React.FC<MoneyProps> = ({ defaultValue, onChange, ...props }) => {
   const [mask, setMask] = useState<string>("99,99");
 
   const handleMoneyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,11 +77,11 @@ const InputMoney: React.FC<MoneyProps> = ({ defaultValue, onChange, ...props }) 
       onChange={handleMoneyChange}
       {...props}
     >
-      <Input />
+      <Input  />
     </InputMask>
   );
 };
 
-export default InputMoney;
+export default Money;
 
   
